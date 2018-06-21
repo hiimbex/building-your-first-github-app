@@ -212,22 +212,6 @@ Now we can install the app on any repository, and any time a new issue is opened
 
 ![Issue getting labeled](images/label-added.png)
 
-## Going further
-
-Interested in transforming this boilerplate into something more functional, more…exciting? Follow along with one of
-our TODO guides to create your own continuous integration server, or TODO
-
-> THIS SECTION WILL HEAVILY DEPEND ON THE OTHER MORE FOCUSED CONTENT WE WILL HAVE AVAILABLE!
-
-We're excited to see what you build! Feel free to share your creations and your success with us TODO HOW!?
-
-[app guides] /apps/guides/
-[probot]: https://probot.github.io/
-[smee]: https://smee.io/
-[app settings]: https://github.com/settings/apps
-[creating a github app]: https://developer.github.com/apps/building-github-apps/creating-a-github-app/
-
-
 ## Conclusion
 
 After walking through this guide, you've learned the basic building blocks for developing GitHub Apps! To review, you:
@@ -250,3 +234,9 @@ Here are some ideas for what you can do next with your app:
 * Move your code to a hosted server (e.g., Heroku). Don't forget to update your app settings with the new domain.
 * Share your project or get advice in the Community Forum: _LINK TO COME_{% if page.version == 'dotcom' %}
 * Have you developed a shiny new app you think others might find useful? [Add it to GitHub Marketplace](/apps/marketplace/creating-and-submitting-your-app-for-approval/)!{% endif %}
+
+[app guides] /apps/guides/
+[probot]: https://probot.github.io/
+[smee]: https://smee.io/
+[app settings]: https://github.com/settings/apps
+[creating a github app]: https://developer.github.com/apps/building-github-apps/creating-a-github-app/
