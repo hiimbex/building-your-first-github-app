@@ -1,6 +1,6 @@
-module.exports = app => {
+module.exports = robot => {
   robot.on('issues.opened', check)
   async function check (context) {
-    await github.issues.addLabels(context.issue({ labels: ['needs-response'] }))
+    await context.github.issues.addLabels(context.issue({ labels: ['needs-response'] }))
   }
 }

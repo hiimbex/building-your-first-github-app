@@ -1,18 +1,49 @@
 ---
-title: Building Your First GitHub App
-redirect_from: /guides/building-your-first-app/
+title: Building Your First GitHub App- JavaScript
+redirect_from: /guides/building-your-first-app-js/
 ---
 
-# Building Your First GitHub App
+# Building Your First GitHub App - JavaScript
 
 {:toc}
 
-This guide is designed to help you get up and running with the backbone for your own GitHub App in JavaScript. The App we are going to get running won't
-do much beyond connect to GitHub. It represents the kind of baseline functionality that you'll need to build something functional. It's the
-first step, but it's only the first step.
+## Introduction
 
-Once you've worked through this guide, you'll be ready to take the code, and flesh it out into something awesome by taking one of the other
-projects in our [app guides][app guides], which are designed to orient you around the various features of the GitHub API.
+This guide is designed to help you build a GitHub App and run it on a server. The app will be simple: it will add a label to any new issue that's opened in a repository the app is installed on.
+
+This project will walk you through the following:
+
+* Registering a GitHub App
+* Exposing your local environment to the internet via smee
+* Programming your app to listen for events
+* Authenticate via Probot
+* Using the Octokit.js library to do REST API operations through Probot
+
+Once you've worked through the steps, you'll be ready to develop other kinds of integrations using the full suite of GitHub APIs. {% if page.version == 'dotcom' %}You can check out successful examples of apps on [GitHub Marketplace](https://github.com/marketplace) and [Works with GitHub](https://github.com/works-with).{% endif %}
+
+### Prior knowledge needed
+
+You may find it helpful to have a basic understanding of the following:
+
+* [GitHub Apps](/apps/about-apps)
+* [Webhooks](/webhooks)
+* The JavaScript programming language (there's no official link)
+* [REST APIs](/v3)
+
+But you can follow along at any experience level. We'll link out to information you need along the way!
+
+## One-time setup
+
+You'll need to complete the following tasks as part of the one-time setup for this project:
+
+* [Initial Setup using Probot](#initial-setup)
+* [Register a new app with GitHub](#register-a-new-app-with-github)
+* [Setup smee](#setup-smee)
+* [Fill in your environment variables](#fill-in-your-environment-variables)
+* [Run the boilerplate](#run-the-boilerplate)
+* [Install the app on your account](#install-the-app-on-your-account)
+
+Once you've completed these steps, you can start [building your app](#build-the-app)!
 
 ## Initial Setup
 
@@ -37,6 +68,8 @@ This will create a new folder `my-first-app`, which we will navigate into on our
 The most important files note here are `index.js`, which is where the code for your app will go, and `package.json`,
 which makes this a standard [npm module](https://docs.npmjs.com/files/package.json).
 
+## Setup smee
+
 To help GitHub connect to your local computer, to talk to our app, we're going to use a tool called [smee][smee].
 (Of course, if you're already familiar with smee or other similar tools like localtunnel or ngrok, feel free to use what you are comfortable with.)
 
@@ -44,7 +77,7 @@ Now we are going to run smee. Go to [smee.io](https://smee.io) and click Start a
 unique domain that we can use. We will
 need to know this domain for the next step. In this example above, we'll use `https://smee.io/hello-world` as the domain.
 
-## Registering an app with GitHub
+## Registering a new app with GitHub
 
 Now, we need to tell GitHub about our app. For now, we'll use the domain smee provided, but in the future we can update GitHub to point to
 our hosting provider. (If at this point you do not yet have a GitHub account, now would be a [great time to join](https://github.com/join).)
@@ -78,7 +111,7 @@ we are from our app.
 
 OK, that's everything we need from the GitHub site! Let's start playing with code!
 
-## Updating our environment variables
+## Fill in your environment variables
 
 All the things necessary to run your GitHub App will live in a `.env` file, which is how nodejs handles environment variables. In your my-first-probot-app folder, you should see a file called `.env.example`. Let's go ahead and rename this file to `.env`. From there we need to add two important variables.
 
@@ -116,7 +149,17 @@ $ npm start
 That's good news! It means our app was able to successfully authenticate and recieve an access token from GitHub. If you saw something like this,
 we're good to go! 🙌
 
-### Update App permissions
+# Building your App
+
+The remainder of this guide walks you through customizing this code so that the app does what you want: when someone opens a new issue in a repo that the app is installed on, the app automatically adds the label `needs-response` to it.
+
+The following sections will walk you through these procedures:
+
+* [Update App permissions](#update-app-permissions)
+* [Add labels to new issues](#add-labels-to-new-issue)
+
+
+## Update App permissions
 
 When you [first registered your app](#register-a-new-app-with-github), you accepted the default permissions, which amount to "no access" for most operations.
 
@@ -149,7 +192,9 @@ module.exports = app => {
 }
 ```
 
-Now we can install the app on any repository, and any time a new issue is opened, it will add the label 'needs-response' to all newly opened issues.
+Now we can install the app on any repository, and any time a new issue is opened, it will add the label 'needs-response' to all newly opened issues, like so:
+
+![Issue getting labeled](images/label-added.png)
 
 ## Going further
 
@@ -165,3 +210,27 @@ We're excited to see what you build! Feel free to share your creations and your 
 [smee]: https://smee.io/
 [app settings]: https://github.com/settings/apps
 [creating a github app]: https://developer.github.com/apps/building-github-apps/creating-a-github-app/
+
+
+## Conclusion
+
+After walking through this guide, you've learned the basic building blocks for developing GitHub Apps! To review, you:
+
+* Registered a new GitHub App
+* Exposed your local environment to the internet via smee
+* Programmed your app to listen for events
+* Used the Octokit.js library to do REST API operations
+* Authenticated via Probot
+
+## Next steps
+
+Here are some ideas for what you can do next with your app:
+
+{% if page.version == 'dotcom' or page.version ver_gt '2.13' %}
+* [Rewrite your app using GraphQL](/changes/2018-04-30-graphql-supports-github-apps/)!{% endif %}
+* Rewrite your app in Ruby using TODO: LINK TO RUBY GUIDE
+* Have the app check whether the `needs-response` label already exists on the issue, and if not, add it.
+* When the bot successfully adds the label, show a message in the Terminal. (Hint: compare the `needs-response` label ID with the ID of the label in the payload as a condition for your message, so that the message only displays when the relevant label is added and not some other label.)
+* Move your code to a hosted server (e.g., Heroku). Don't forget to update your app settings with the new domain.
+* Share your project or get advice in the Community Forum: _LINK TO COME_{% if page.version == 'dotcom' %}
+* Have you developed a shiny new app you think others might find useful? [Add it to GitHub Marketplace](/apps/marketplace/creating-and-submitting-your-app-for-approval/)!{% endif %}
