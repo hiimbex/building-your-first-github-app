@@ -116,17 +116,40 @@ $ npm start
 That's good news! It means our app was able to successfully authenticate and recieve an access token from GitHub. If you saw something like this,
 we're good to go! 🙌
 
+### Update App permissions
+
+When you [first registered your app](#register-a-new-app-with-github), you accepted the default permissions, which amount to "no access" for most operations.
+
+But your app is going to need permission to read issues and write labels. To update its permissions, return to the [app settings page](https://github.com/settings/apps), choose your app, and click **Permissions & Webhooks** in the sidebar.
+
+* In the permissions section, find **Issues**, and select **Read & Write** in the Access dropdown next to it. The description says this option grants access to both issues and labels, which is just what you need.
+* In the events section, subscribe to **Issues** events.
+
+Save your changes!
+
+{{#note}}
+
+**Note:** Any time you change your app's permissions or webhooks, users who have installed the app (including yourself!) will need to accept the new permissions before the changes take effect. Users who have installed the app will receive an email prompting them to accept the new permissions. Make sure to check your own email and follow the link to accept the new permissions.
+
+{{/note}}
+
+Great! Your app has permission to do the tasks you want it to do. Now you can add the code to make it work.
+
+## Add labels to new issues
+
+We already know that Probot handles the authentication side of things, but what Probot also does is pass in an authenticated octokit instance in the form of `context.github` that allows you to utilize GitHub's REST API.
+
 Now we can copy this code into our `index.js`:
 ```js
 module.exports = app => {
   robot.on('issues.opened', check)
   async function check (context) {
-    await github.issues.addLabels(context.issue({ labels: ['needs-response'] }))
+    await context.github.issues.addLabels(context.issue({ labels: ['needs-response'] }))
   }
 }
 ```
 
-Now we can install the app on any repository, and it will add the label 'needs-response' to all newly opened issues.
+Now we can install the app on any repository, and any time a new issue is opened, it will add the label 'needs-response' to all newly opened issues.
 
 ## Going further
 
