@@ -116,8 +116,17 @@ $ npm start
 That's good news! It means our app was able to successfully authenticate and recieve an access token from GitHub. If you saw something like this,
 we're good to go! 🙌
 
+Now we can copy this code into our `index.js`:
+```js
+module.exports = app => {
+  robot.on('issues.opened', check)
+  async function check (context) {
+    await github.issues.addLabels(context.issue({ labels: ['needs-response'] }))
+  }
+}
+```
 
-And that's it! Now we have the backbone for our first GitHub App, ready to be fleshed out into something cool.
+Now we can install the app on any repository, and it will add the label 'needs-response' to all newly opened issues.
 
 ## Going further
 
