@@ -132,7 +132,11 @@ LOG_LEVEL=debug
 WEBHOOK_PROXY_URL='https://smee.io/hello-world'
 ```
 
-NOTE: `WEBHOOK_SECRET` is automatically set to development, if you set it to something different, be sure to update your `.env` to reflect that.
+{{#note}}
+
+**Note**: Probot automatically sets `WEBHOOK_SECRET` to development in its boilerplate, if you set it to something different, be sure to update your `.env` to reflect that.
+
+{{/note}}
 
 Great! Now we've got our environment prepped. Let's run the app!
 
@@ -196,7 +200,7 @@ We already know that Probot handles the authentication side of things, but what 
 
 Now we can copy this code into our `index.js`:
 ```js
-module.exports = app => {
+module.exports = robot => {
   robot.on('issues.opened', check)
   async function check (context) {
     await context.github.issues.addLabels(context.issue({ labels: ['needs-response'] }))
