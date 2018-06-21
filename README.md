@@ -180,6 +180,18 @@ Great! Your app has permission to do the tasks you want it to do. Now you can ad
 
 ## Add labels to new issues
 
+OK, your app can tell when issues are opened. Now you want the app to add the label `needs-response` to any newly opened issue.
+
+First, create the label. For the purposes of this guide, create the label manually via the GitHub website. In your repository, click **Issues**, then **Labels**, then click the **New label** button. Name the new label `needs-response`.
+
+{{#note}}
+
+**Note**: Wouldn't it be great if your app could create the label programmatically? [It can](/v3/issues/labels/#create-a-label)! Try adding the code to do that on your own after you finish the steps in this guide.
+
+{{/note}}
+
+Now that the label exists, you can program your app to use the REST API to [add the label to any newly opened issue](/v3/issues/labels/#add-labels-to-an-issue).
+
 We already know that Probot handles the authentication side of things, but what Probot also does is pass in an authenticated octokit instance in the form of `context.github` that allows you to utilize GitHub's REST API.
 
 Now we can copy this code into our `index.js`:
