@@ -196,7 +196,7 @@ First, create the label. For the purposes of this guide, create the label manual
 
 Now that the label exists, you can program your app to use the REST API to [add the label to any newly opened issue](/v3/issues/labels/#add-labels-to-an-issue).
 
-We already know that Probot handles the authentication side of things, but what Probot also does is pass in an authenticated octokit instance in the form of `context.github` that allows you to utilize GitHub's REST API.
+We already know that Probot handles the authentication side of things, but what Probot also does is pass in an authenticated Octokit instance in the form of `context.github` that allows you to utilize GitHub's REST API.
 
 Now we can copy this code into our `index.js`:
 ```js
@@ -211,6 +211,43 @@ module.exports = robot => {
 Now we can install the app on any repository, and any time a new issue is opened, it will add the label 'needs-response' to all newly opened issues, like so:
 
 ![Issue getting labeled](images/label-added.png)
+
+## Troubleshooting
+
+Here are a few FAQs. If you run into any other trouble, you can ask for help or advice in the GitHub Community Forum: _LINK-TO-COME_
+
+* **Q:** When I run the server, I get the following error:
+
+    ```
+    throw new Error(`Missing private key for GitHub App, ${hint}`)
+    ^
+    Error: Missing private key for GitHub App, please use:
+      * `--private-key=/path/to/private-key` flag, or
+      * `PRIVATE_KEY` environment variable, or
+      * `PRIVATE_KEY_PATH` environment variable
+
+    ```
+
+    **A:** You probably haven't saved up your private key to the right folder. It probably originally got saved in your `Downloads` folder, so move it to your project's directory, and then try running the app again.
+
+* **Q:** When I run the server, and submit a new issue, nothing happens. The app doesn't comment and I don't see anything new in my terminal.
+
+    **A:** There are two possibilities here. Either you haven't told the app to listen on the correct webhooks. In which case be sure to check under Subscribe to events, the Issues event. Or you may not have installed the app on your repository. Be sure the app installed on the repository you're trying to open the issue on.
+
+* **Q:** When I run the server, I see this error:
+
+    ```
+    Missing GitHub App ID.
+    Use --app flag or set APP_ID environment variable.
+    ```
+
+    or this one:
+
+    ```
+    ERROR probot: {"message":"Integration not found","documentation_url":"https://developer.github.com/v3"}
+    ```
+
+    **A:** Be sure to set the APP_ID variable in your `.env` to match the one GitHub gave you when registering the app.
 
 ## Conclusion
 
