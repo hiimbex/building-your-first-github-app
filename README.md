@@ -144,7 +144,8 @@ Great! Now we've got our environment prepped. Let's run the app!
 
 Now, for one last test. We're going to start our server by running:
 ```bash
-$ npm start
+npm install
+npm start
 ```
  and watching at the output in your terminal. You should see something like this:
 
