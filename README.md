@@ -113,7 +113,7 @@ OK, that's everything we need from the GitHub site! Let's start playing with cod
 
 ## Fill in your environment variables
 
-All the things necessary to run your GitHub App will live in a `.env` file, which is how nodejs handles environment variables. In your my-first-probot-app folder, you should see a file called `.env.example`. Let's go ahead and rename this file to `.env`. From there we need to add two important variables.
+Let's open up all our files in a text editor. You can use any editor you like. All the things necessary to run your GitHub App will live in a `.env` file, which is how nodejs handles environment variables. In your my-first-probot-app folder, you should see a file called `.env.example`. Let's go ahead and rename this file to `.env`. From there we need to add two important variables.
 
 1. Fill in the `APP_ID=` and set it to the App ID GitHub gave you.
 
@@ -134,7 +134,7 @@ WEBHOOK_PROXY_URL='https://smee.io/hello-world'
 
 {{#note}}
 
-**Note**: Probot automatically sets `WEBHOOK_SECRET` to development in its boilerplate, if you set it to something different, be sure to update your `.env` to reflect that.
+**Note**: Probot automatically sets `WEBHOOK_SECRET` to 'development' in its boilerplate, if you set it to something different, be sure to update your `.env` to reflect that.
 
 {{/note}}
 
@@ -183,6 +183,8 @@ Save your changes!
 
 Great! Your app has permission to do the tasks you want it to do. Now you can add the code to make it work.
 
+Make sure you install the app on the repository you want to use it on!
+
 ## Add labels to new issues
 
 OK, your app can tell when issues are opened. Now you want the app to add the label `needs-response` to any newly opened issue.
@@ -201,10 +203,17 @@ We already know that Probot handles the authentication side of things, but what 
 
 Now we can copy this code into our `index.js`:
 ```js
-module.exports = robot => {
-  robot.on('issues.opened', check)
-  async function check (context) {
+module.exports = app => {
+ // a typical probot app only exports `app`
+  app.on('issues.opened', check) 
+  // when issues are opened call the `check` fucntion
+  async function check (context) { 
+  // `check` fucntion that takes a context that has a `context.payload` the webhook payload and `context.github` authenticated github client using octokit/rest.js
     await context.github.issues.addLabels(context.issue({ labels: ['needs-response'] }))
+    // await because it's async,
+    // issues.addLabels() is from octokit/rest.js docs
+    // context.issue() is an internal probot api that returns => {owner: 'username', repo: 'reponame', 'number': 123}
+    // context.issue() is specific to the issue webhook event that was triggered and contains the info to reference that specific issue
   }
 }
 ```
